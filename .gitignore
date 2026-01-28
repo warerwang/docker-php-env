@@ -5,3 +5,4 @@ redis/*
 projects/*
 rabbitmq/*
 nginx/html/*
+php/keys/*
