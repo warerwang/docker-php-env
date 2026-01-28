@@ -1,8 +1,5 @@
 logs/*
-mongo/*
-mysql/*
-redis/*
+data/*
 projects/*
-rabbitmq/*
 nginx/html/*
 php/keys/*

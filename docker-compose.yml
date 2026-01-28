@@ -44,7 +44,7 @@ services:
       MYSQL_PASSWORD: laravel
       TZ: UTC
     volumes:
-      - ./mysql/data:/var/lib/mysql
+      - ./data/mysql:/var/lib/mysql
       - ./logs/mysql:/var/log/mysql
     networks:
       - app-network
@@ -58,7 +58,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: mongo
       TZ: UTC
     volumes:
-      - ./mongo/data:/data/db
+      - ./data/mongo:/data/db
       - ./logs/mongo:/var/log/mongodb
     networks:
       - app-network
@@ -69,7 +69,7 @@ services:
     environment:
       TZ: UTC
     volumes:
-      - ./redis/data:/data
+      - ./data/redis:/data
     networks:
       - app-network
   rabbitmq:
@@ -82,7 +82,7 @@ services:
       RABBITMQ_DEFAULT_PASS: guest
       TZ: UTC
     volumes:
-      - ./rabbitmq/data:/var/lib/rabbitmq
+      - ./data/rabbitmq:/var/lib/rabbitmq
       - ./logs/rabbitmq:/var/log/rabbitmq
     networks:
       - app-network

@@ -115,21 +115,27 @@ make help      # 显示帮助信息
 │   ├── Dockerfile       # PHP 镜像构建文件
 │   ├── php.ini          # PHP 配置文件
 │   ├── www.conf         # PHP-FPM 配置
-│   └── conf.d/          # PHP 扩展配置
+│   ├── main.properties  # 应用配置文件
+│   ├── conf.d/          # PHP 扩展配置
+│   └── keys/            # 密钥文件目录
 ├── nginx/               # Nginx 配置
 │   ├── conf.d/          # Nginx 站点配置
-│   └── ssl/             # SSL 证书
+│   │   └── vhost/       # 虚拟主机配置
+│   ├── ssl/             # SSL 证书
+│   └── html/            # 静态文件
 ├── projects/            # 项目代码目录
+│   └── default/         # 默认项目
 ├── logs/                # 日志目录
-│   ├── php/
-│   ├── nginx/
-│   ├── mysql/
-│   ├── mongo/
-│   └── rabbitmq/
-├── mysql/data/          # MySQL 数据持久化
-├── mongo/data/          # MongoDB 数据持久化
-├── redis/data/          # Redis 数据持久化
-└── rabbitmq/data/       # RabbitMQ 数据持久化
+│   ├── php/             # PHP 日志
+│   ├── nginx/           # Nginx 日志
+│   ├── mysql/           # MySQL 日志
+│   ├── mongo/           # MongoDB 日志
+│   └── rabbitmq/        # RabbitMQ 日志
+└── data/                # 数据持久化目录
+    ├── mysql/           # MySQL 数据
+    ├── mongo/           # MongoDB 数据
+    ├── redis/           # Redis 数据
+    └── rabbitmq/        # RabbitMQ 数据
 ```
 
 ## 项目配置
@@ -166,9 +172,10 @@ tail -f logs/mysql/*.log
 ## 注意事项
 
 1. 首次启动需要构建 PHP 镜像，可能需要几分钟
-2. 数据库数据持久化在本地，删除容器不会丢失数据
-3. 建议不要将 `mysql/data`、`mongo/data` 等数据目录提交到版本控制
+2. 数据库数据持久化在 `data/` 目录，删除容器不会丢失数据
+3. 建议不要将 `data/`、`logs/` 等目录下的数据文件提交到版本控制
 4. SSL 证书文件存放在 `nginx/ssl/` 目录
+5. 项目代码统一放在 `projects/` 目录下，每个子目录对应一个项目
 
 ## 系统要求
 
