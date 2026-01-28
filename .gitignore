@@ -1,0 +1,7 @@
+logs/*
+mongo/*
+mysql/*
+redis/*
+projects/*
+rabbitmq/*
+nginx/html/*

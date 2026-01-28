@@ -1,0 +1,92 @@
+#  php8.2 nginx mysql8.2 mongo redis
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: php/Dockerfile
+    ports:
+      - 9000:9000
+    volumes:
+      - ./projects:/var/html
+      - ./php/conf.d:/usr/local/etc/php/conf.d
+      - ./php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ./php/php.ini:/usr/local/etc/php/php.ini
+      - ./logs/php:/var/log/php
+      - ./php/main.properties:/etc/foxitcloud/main.properties
+    environment:
+      - TZ=UTC
+    networks:
+      - app-network
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/conf.d/vhost:/etc/nginx/conf.d/vhost
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./projects:/var/html
+      - ./logs/nginx:/var/log/nginx
+    environment:
+      - TZ=UTC
+    networks:
+      - app-network
+  mysql:
+    image: mysql:8.2
+    ports:
+      - 3306:3306 
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+      TZ: UTC
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./logs/mysql:/var/log/mysql
+    networks:
+      - app-network
+  # mongo: user mongo,pwd mongo
+  mongo:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+      TZ: UTC
+    volumes:
+      - ./mongo/data:/data/db
+      - ./logs/mongo:/var/log/mongodb
+    networks:
+      - app-network
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    environment:
+      TZ: UTC
+    volumes:
+      - ./redis/data:/data
+    networks:
+      - app-network
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      TZ: UTC
+    volumes:
+      - ./rabbitmq/data:/var/lib/rabbitmq
+      - ./logs/rabbitmq:/var/log/rabbitmq
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
