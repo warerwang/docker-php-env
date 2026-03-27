@@ -1,9 +1,9 @@
 FROM php:8.2-fpm
 
 # 替换为阿里云源
-RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list.d/debian.sources && \
-    sed -i 's/debian-security/mirrors.aliyun.com\/debian-security/g' /etc/apt/sources.list.d/debian.sources && \
-    sed -i 's/mirrors.aliyun.com\/mirrors.aliyun.com/mirrors.aliyun.com/g' /etc/apt/sources.list.d/debian.sources
+# RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list.d/debian.sources && \
+#     sed -i 's/debian-security/mirrors.aliyun.com\/debian-security/g' /etc/apt/sources.list.d/debian.sources && \
+#     sed -i 's/mirrors.aliyun.com\/mirrors.aliyun.com/mirrors.aliyun.com/g' /etc/apt/sources.list.d/debian.sources
 
 # 安装系统依赖包
 RUN apt-get update && apt-get install -y \
@@ -15,11 +15,10 @@ RUN apt-get update && apt-get install -y \
     curl \
     libxml2-dev \
     default-mysql-client \
-    default-mysql-server \
     libssl-dev \
     openssl \
     libmariadb-dev \
-    libcares-dev \
+    libc-ares-dev \
     libcurl4-openssl-dev
 
 # 配置、安装和启用PHP扩展
@@ -34,7 +33,8 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
     pdo_mysql \
     gd \
     sockets \
-    pcntl
+    pcntl \
+    intl
 
 RUN pecl install -D 'enable-swoole-pgsql="no" with-swoole-odbc="no" with-swoole-oracle="no" enable-swoole-sqlite="no" enable-swoole-thread="no" enable-iouring="no" enable-brotli="no" enable-zstd="no" enable-sockets="no" enable-openssl="yes" enable-http2="yes" enable-mysqlnd="yes" enable-swoole-json="no" enable-swoole-curl="no" enable-cares="yes"' swoole
 # 安装和启用PECL扩展
